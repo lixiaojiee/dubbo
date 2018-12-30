@@ -61,15 +61,12 @@ public class DubboMonitor implements Monitor {
         this.monitorService = monitorService;
         this.monitorInterval = monitorInvoker.getUrl().getPositiveParameter("interval", 60000);
         // collect timer for collecting statistics data
-        sendFuture = scheduledExecutorService.scheduleWithFixedDelay(new Runnable() {
-            @Override
-            public void run() {
+        sendFuture = scheduledExecutorService.scheduleWithFixedDelay(() -> {
+            try {
                 // collect data
-                try {
-                    send();
-                } catch (Throwable t) {
-                    logger.error("Unexpected error occur at send statistic, cause: " + t.getMessage(), t);
-                }
+                send();
+            } catch (Throwable t) {
+                logger.error("Unexpected error occur at send statistic, cause: " + t.getMessage(), t);
             }
         }, monitorInterval, monitorInterval, TimeUnit.MILLISECONDS);
     }
@@ -92,7 +89,7 @@ public class DubboMonitor implements Monitor {
             long maxOutput = numbers[7];
             long maxElapsed = numbers[8];
             long maxConcurrent = numbers[9];
-            String version = getUrl().getParameter(Constants.DEFAULT_PROTOCOL);
+            String protocol = getUrl().getParameter(Constants.DEFAULT_PROTOCOL);
 
             // send statistics data
             URL url = statistics.getUrl()
@@ -107,7 +104,7 @@ public class DubboMonitor implements Monitor {
                             MonitorService.MAX_OUTPUT, String.valueOf(maxOutput),
                             MonitorService.MAX_ELAPSED, String.valueOf(maxElapsed),
                             MonitorService.MAX_CONCURRENT, String.valueOf(maxConcurrent),
-                            Constants.DEFAULT_PROTOCOL, version
+                            Constants.DEFAULT_PROTOCOL, protocol
                     );
             monitorService.collect(url);
 
