@@ -47,7 +47,7 @@ public class Hessian2ObjectInput implements ObjectInput {
 
     @Override
     public short readShort() throws IOException {
-        return (short) mH2i.readInt();
+        return mH2i.readShort();
     }
 
     @Override
@@ -62,7 +62,7 @@ public class Hessian2ObjectInput implements ObjectInput {
 
     @Override
     public float readFloat() throws IOException {
-        return (float) mH2i.readDouble();
+        return mH2i.readFloat();
     }
 
     @Override
@@ -87,13 +87,12 @@ public class Hessian2ObjectInput implements ObjectInput {
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T> T readObject(Class<T> cls) throws IOException,
-            ClassNotFoundException {
+    public <T> T readObject(Class<T> cls) throws IOException {
         return (T) mH2i.readObject(cls);
     }
 
     @Override
-    public <T> T readObject(Class<T> cls, Type type) throws IOException, ClassNotFoundException {
+    public <T> T readObject(Class<T> cls, Type type) throws IOException {
         return readObject(cls);
     }
 
