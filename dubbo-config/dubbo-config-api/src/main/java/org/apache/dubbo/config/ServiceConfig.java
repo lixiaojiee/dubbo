@@ -82,7 +82,7 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
      *
      * <li>when the url is dubbo://224.5.6.7:1234/org.apache.dubbo.config.api.DemoService?application=dubbo-sample, then
      * the protocol is <b>DubboProtocol</b></li>
-     *
+     * <p>
      * Actually，when the {@link ExtensionLoader} init the {@link Protocol} instants,it will automatically wraps two
      * layers, and eventually will get a <b>ProtocolFilterWrapper</b> or <b>ProtocolListenerWrapper</b>
      */
@@ -353,7 +353,7 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
 
     protected synchronized void doExport() {
         if (unexported) {
-            throw new IllegalStateException("Already unexported!");
+            throw new IllegalStateException("The service " + interfaceName + "has already unexported!");
         }
         if (exported) {
             return;
@@ -371,7 +371,7 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
     private void checkRef() {
         // reference should not be null, and is the implementation of the given interface
         if (ref == null) {
-            throw new IllegalStateException("ref not allow null!");
+            throw new IllegalStateException("The ref not allow null!");
         }
         if (!interfaceClass.isInstance(ref)) {
             throw new IllegalStateException("The class "
@@ -392,7 +392,7 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
                 try {
                     exporter.unexport();
                 } catch (Throwable t) {
-                    logger.warn("unexpected err when unexport" + exporter, t);
+                    logger.warn("Unexpected error occured when unexport" + exporter, t);
                 }
             }
             exporters.clear();
@@ -450,7 +450,7 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
                                             if (argtypes[argument.getIndex()].getName().equals(argument.getType())) {
                                                 appendParameters(map, argument, method.getName() + "." + argument.getIndex());
                                             } else {
-                                                throw new IllegalArgumentException("argument config error : the index attribute and type attribute not match :index :" + argument.getIndex() + ", type:" + argument.getType());
+                                                throw new IllegalArgumentException("Argument config error : the index attribute and type attribute not match :index :" + argument.getIndex() + ", type:" + argument.getType());
                                             }
                                         } else {
                                             // multiple callbacks in the method
@@ -459,7 +459,7 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
                                                 if (argclazz.getName().equals(argument.getType())) {
                                                     appendParameters(map, argument, method.getName() + "." + j);
                                                     if (argument.getIndex() != -1 && argument.getIndex() != j) {
-                                                        throw new IllegalArgumentException("argument config error : the index attribute and type attribute not match :index :" + argument.getIndex() + ", type:" + argument.getType());
+                                                        throw new IllegalArgumentException("Argument config error : the index attribute and type attribute not match :index :" + argument.getIndex() + ", type:" + argument.getType());
                                                     }
                                                 }
                                             }
@@ -470,7 +470,7 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
                         } else if (argument.getIndex() != -1) {
                             appendParameters(map, argument, method.getName() + "." + argument.getIndex());
                         } else {
-                            throw new IllegalArgumentException("argument config must set index or type attribute.eg: <dubbo:argument index='0' .../> or <dubbo:argument type=xxx .../>");
+                            throw new IllegalArgumentException("Argument config must set index or type attribute.eg: <dubbo:argument index='0' .../> or <dubbo:argument type=xxx .../>");
                         }
 
                     }
@@ -954,12 +954,12 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
 
     @Override
     public void setMock(Boolean mock) {
-        throw new IllegalArgumentException("mock doesn't support on provider side");
+        throw new IllegalArgumentException("Mock doesn't support on provider side");
     }
 
     @Override
     public void setMock(String mock) {
-        throw new IllegalArgumentException("mock doesn't support on provider side");
+        throw new IllegalArgumentException("Mock doesn't support on provider side");
     }
 
     public List<URL> getExportedUrls() {
